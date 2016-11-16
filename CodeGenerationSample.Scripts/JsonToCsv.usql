@@ -8,7 +8,7 @@ REFERENCE ASSEMBLY master.[Newtonsoft.Json];
             MarketId string,
             MarketName string
     FROM "/Samples/Data/MarketLocations.json"
-    USING new CodeGenerationSample.Json.JsonExtractor("MarketLocations[*]", "SalesCategories.Produce", "SalesCategories.BakedGoods", "SalesCategories.RestaurantItems", "MarketId", "MarketName");
+    USING new CodeGenerationSample.Json.MultiLevelJsonExtractor("MarketLocations[*]", false, "SalesCategories.Produce", "SalesCategories.BakedGoods", "SalesCategories.RestaurantItems", "MarketId", "MarketName");
 
 
 @produce =

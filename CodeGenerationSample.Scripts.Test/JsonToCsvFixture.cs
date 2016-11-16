@@ -81,7 +81,7 @@ namespace CodeGenerationSample.Scripts.Test
         
         [TestMethod]
         [DeploymentItem("ExpectedResults")]
-        public void TestAdvancedPaths()
+        public void TestTransformationOutput()
         {
             string expectedResultsFile = "produce.csv";
             string uSqlScriptName = "JsonToCsv.usql";
