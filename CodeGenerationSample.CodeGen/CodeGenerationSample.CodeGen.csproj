@@ -89,14 +89,14 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>if $(ConfigurationName) == Debug (
-"C:\Program Files (x86)\Common Files\Microsoft Shared\TextTemplating\14.0\TextTransform.exe" -r Newtonsoft.Json.dll -P "$(SolutionDir)packages\Newtonsoft.Json.9.0.1\lib\net45" "$(ProjectDir)TypeRemover.tt"
-"C:\Program Files (x86)\Common Files\Microsoft Shared\TextTemplating\14.0\TextTransform.exe" -r Newtonsoft.Json.dll -P "$(SolutionDir)packages\Newtonsoft.Json.9.0.1\lib\net45" "$(ProjectDir)TypeGenerator.tt"
-"C:\Program Files (x86)\Common Files\Microsoft Shared\TextTemplating\14.0\TextTransform.exe" -r Newtonsoft.Json.dll -P "$(SolutionDir)packages\Newtonsoft.Json.9.0.1\lib\net45" "$(ProjectDir)FunctionGenerator.tt"
-)</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Debug (
+"C:\Program Files (x86)\Common Files\Microsoft Shared\TextTemplating\14.0\TextTransform.exe" -r "$(TargetDir)Newtonsoft.Json.dll" "$(ProjectDir)TypeRemover.tt"
+"C:\Program Files (x86)\Common Files\Microsoft Shared\TextTemplating\14.0\TextTransform.exe" -r "$(TargetDir)Newtonsoft.Json.dll" "$(ProjectDir)TypeGenerator.tt"
+"C:\Program Files (x86)\Common Files\Microsoft Shared\TextTemplating\14.0\TextTransform.exe" -r "$(TargetDir)Newtonsoft.Json.dll"  "$(ProjectDir)FunctionGenerator.tt"
 xcopy "$(ProjectDir)TypeRemover.genusql" "$(SolutionDir)CodeGenerationSample.Scripts\TypeRemover.usql" /Y /D
 xcopy "$(ProjectDir)TypeGenerator.genusql" "$(SolutionDir)CodeGenerationSample.Scripts\TypeGenerator.usql" /Y /D
 xcopy "$(ProjectDir)FunctionGenerator.genusql" "$(SolutionDir)CodeGenerationSample.Scripts\FunctionGenerator.usql" /Y /D

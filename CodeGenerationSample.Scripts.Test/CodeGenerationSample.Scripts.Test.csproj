@@ -58,7 +58,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="JsonExtractorTest.cs" />
+    <Compile Include="JsonToCsvFixture.cs" />
+    <Compile Include="JsonExtractorFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +69,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ExpectedResults\produce.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="InputFiles\MarketLocations.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

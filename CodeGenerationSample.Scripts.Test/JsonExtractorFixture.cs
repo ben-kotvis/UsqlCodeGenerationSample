@@ -13,7 +13,7 @@ using CodeGenerationSample.Json.Exceptions;
 namespace CodeGenerationSample.Scripts.Test
 {
     [TestClass]
-    public class JsonExtractorTest
+    public class JsonExtractorFixture
     {
         private TestContext testContextInstance;
 
