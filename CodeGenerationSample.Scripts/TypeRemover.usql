@@ -1,0 +1,11 @@
+﻿
+
+
+
+
+
+//This is generated code, please do not change.  
+DROP TYPE IF EXISTS Produce;
+DROP TYPE IF EXISTS BakedGoods;
+DROP TYPE IF EXISTS RestaurantItems;
+DROP TYPE IF EXISTS CategoryType;

@@ -1,0 +1,46 @@
+﻿
+
+
+
+
+
+//This is generated code, please do not change.  
+
+CREATE TYPE IF NOT EXISTS CategoryType AS TABLE
+(
+	[Produce] string,
+	[BakedGoods] string,
+	[RestaurantItems] string,
+    MarketId string,
+    MarketName string
+); 
+
+CREATE TYPE IF NOT EXISTS Produce AS TABLE
+(
+	[_GEN__Type] string,
+	[Name] string,
+	[DatePicked] string,
+	[ShelfLifeInDays] string,
+	[Calories] string,
+	[Price] string,
+    MarketId string,
+    MarketName string
+);
+
+CREATE TYPE IF NOT EXISTS BakedGoods AS TABLE
+(
+	[DateMade] string,
+	[Name] string,
+	[Price] string,
+    MarketId string,
+    MarketName string
+);
+
+CREATE TYPE IF NOT EXISTS RestaurantItems AS TABLE
+(
+	[Name] string,
+	[Price] string,
+	[PreparationTimeInMinutes] string,
+    MarketId string,
+    MarketName string
+);

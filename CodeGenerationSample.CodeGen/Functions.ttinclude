@@ -1,0 +1,352 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Management" #>
+<#@ import namespace="System.Management" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+
+<#@ assembly name="Newtonsoft.Json.dll" #>
+
+<#@ import namespace="Newtonsoft.Json" #>
+<#@ import namespace="Newtonsoft.Json.Linq" #>
+
+<#+
+
+
+// all of the plugin names that will be used in code generation
+static string CategoryNamesString = "Produce,BakedGoods,RestaurantItems";	
+
+// this is used to discern concatenation from the code gen vs other underbars etc
+static string ConcatenationCode = "GEN";
+
+// the format of the concatenation
+string ConcatenationCodeFormatted = string.Format("_{0}_", ConcatenationCode);
+
+// this is the method that runs.  
+void Run(TemplateType templateType)
+{
+	string[] categoryNames = CategoryNamesString.Split(',');		
+	
+	PropertyMap map = GetMap(Path.Combine(getProjectPath(), "SampleFiles"), categoryNames);	
+		
+	if(templateType == TemplateType.TypeGenerator)
+	{
+		CreateCategoryType(categoryNames);
+	}
+	
+	handlePlugins(categoryNames, map, templateType);
+}
+
+// does the code generation for the plugins first as they land based on what is in the array that was provided
+void handlePlugins(string[] categoryNames, PropertyMap map, TemplateType templateType)
+{
+	foreach(var categoryName in categoryNames)
+	{		
+		var rawProperties = map.UniqueProperties.Where(i => i.StartsWith(string.Format("SalesCategories.{0}", categoryName)));
+			
+		switch (templateType)
+		{
+			case TemplateType.Functions:
+				CreatePluginFunctions(categoryName, 
+									 "CategoryType", 
+									 categoryName,
+									 categoryName);
+									 
+				AddSelectQuery(rawProperties, false, categoryName);
+				break;
+				
+			case TemplateType.TypeRemover:
+				CreateDropType(categoryName);
+				break;
+
+			case TemplateType.TypeGenerator:
+				CreateRawType(categoryName, rawProperties,  () => { return; });
+				break;
+		}
+	
+	}
+}
+
+void CreateCategoryType(string[] categoryNames)
+{
+#>
+
+CREATE TYPE IF NOT EXISTS CategoryType AS TABLE
+(
+<#+
+			// create the base type to get from queries
+	foreach(var categoryNamestring in categoryNames)
+	{
+#>
+	[<#=categoryNamestring#>] string,
+<#+
+	}
+#>
+    MarketId string,
+    MarketName string
+); 
+<#+
+
+}
+
+void CreateRawType(string typeName, IEnumerable<string> rawProperties, Action executeMe)
+{
+#>
+
+CREATE TYPE IF NOT EXISTS <#= typeName #> AS TABLE
+(
+<#+
+	AddProperties(rawProperties.Where(i => !i.EndsWith(typeName)), false, true);
+	executeMe();
+#>
+    MarketId string,
+    MarketName string
+);
+<#+
+}
+
+void CreateDropType(string typeName)
+{
+#>
+DROP TYPE IF EXISTS <#= typeName #>;
+<#+
+}
+
+void CreatePluginFunctions(string categoryName, 
+						   string parameterName, 
+						   string returnTableName,
+						   string jsonStringPropertyName)
+{	
+
+#>
+
+/* ------------------------------------ Function <#= categoryName #> ------------------------------------- */
+
+DROP FUNCTION IF EXISTS <#= categoryName #>Function;
+		
+CREATE FUNCTION IF NOT EXISTS <#= categoryName #>Function(@table <#=parameterName#>)
+RETURNS @formatted <#= returnTableName #>
+AS BEGIN
+		
+		
+REFERENCE ASSEMBLY master.[CodeGenerationSample.Json];
+REFERENCE ASSEMBLY master.[Newtonsoft.Json];
+		
+@staging =
+	SELECT 
+		CodeGenerationSample.Json.JsonFunctions.JsonTuple(<#=jsonStringPropertyName#>) AS Result,
+		MarketId,
+        MarketName
+	FROM @table;
+
+@staging =
+	SELECT 
+        CodeGenerationSample.Json.JsonFunctions.JsonTuple(Exploded) AS Result,
+		MarketId,
+        MarketName
+	FROM @staging
+			CROSS APPLY
+				EXPLODE(Result.Values) AS dp(Exploded);
+       
+		
+<#+
+
+}
+
+void AddSelectQuery(IEnumerable<string> rawProperties, bool singularArray, string categoryName)
+{
+#>       
+@formatted =
+    SELECT 
+<#+
+	AddProperties(rawProperties.Where(i => !i.EndsWith(categoryName)), true, false);
+
+	if(singularArray)
+	{
+#>
+		n AS <#=AfterAllUnderscores(categoryName)#>,
+<#+
+	}
+
+#>
+		MarketId,
+        MarketName
+<#+
+	if(singularArray)
+	{
+#>
+		FROM @staging	
+			CROSS APPLY EXPLODE(PrimaryResultSet.Values) AS dp(n);
+<#+
+	}
+	else
+	{
+#>
+		FROM @staging;
+<#+
+	}
+#>    
+	RETURN;
+END;
+<#+
+}
+
+void AddProperties(IEnumerable<string> properties, bool isArrayOrType, bool isForTypeGeneration)
+{
+	foreach(var prop in properties)
+	{
+		string fixedPropName = FixNames(prop);			
+
+		if(isForTypeGeneration)
+		{
+#>
+	[<#= fixedPropName #>] string,
+<#+
+		}
+		else
+		{
+#>
+		Result["<#=AfterAllPeriods(prop)#>"] AS <#=fixedPropName#>,
+<#+	
+		}
+	}
+}
+
+string FixNames(string propertyName)
+{			
+	propertyName = AfterAllPeriods(propertyName);
+
+	if(propertyName == "GUID")
+	{
+		return "Guid";
+	}
+
+	if(propertyName == "UUID")
+	{
+		return "Uuid";
+	}
+
+	if(propertyName == "Type")
+	{
+		return string.Concat(ConcatenationCodeFormatted, "_Type");
+	}
+
+	return propertyName;
+}	
+
+string getProjectPath()
+{
+    // Relative path names work in TextTransform.exe
+    var relativeFile = @".";
+    if (!File.Exists(relativeFile)) // oops! We're copied to a temporary directory
+    {
+        // Host.ResolvePath works in Visual Studio
+        relativeFile = this.Host.ResolvePath(relativeFile);
+    }
+
+    return relativeFile;
+}
+
+string AfterAllPeriods(string input)
+{
+	return AfterAll(input, ".");
+}
+
+string AfterAllGeneratedUnderscores(string input)
+{
+	return AfterAll(input, ConcatenationCodeFormatted);		
+}
+
+string AfterAllUnderscores(string input)
+{
+	return AfterAll(input, "_");		
+}
+
+string AfterAll(string input, string phrase)
+{
+	int additionalLength = phrase.Length;
+	int lastPeriod = input.LastIndexOf(phrase);
+
+	if(lastPeriod > -1)
+	{
+		input = input.Substring(lastPeriod + additionalLength);
+	}
+
+	return input;
+}
+
+string BeforeLast(string input, string character)
+{
+	int lastPeriod = input.LastIndexOf(character);
+
+	if(lastPeriod > -1)
+	{
+		input = input.Substring(0, lastPeriod);
+	}
+
+	return input;
+}
+
+PropertyMap GetMap(string jsonFilePath, string[] categoryNames)
+{
+    var result = new PropertyMap();
+		
+    foreach (var fileName in Directory.GetFiles(jsonFilePath))
+    {
+        processFile(fileName, result, categoryNames);
+    }
+
+    return result;
+}
+
+static void processFile(string fileName, PropertyMap propertyMap, string[] categoryNames)
+{
+    var jsonObject = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(fileName));
+                        
+    var deviceToken = jsonObject.SelectTokens("MarketLocations[*].SalesCategories");
+
+    foreach (var token in deviceToken)
+    {
+        foreach (var item in (token as JObject).Descendants())
+        {
+            findAllProperties(item, propertyMap, categoryNames);
+        }
+    }
+}
+
+static void findAllProperties(JToken token, PropertyMap propertyMap, string[] categoryNames)
+{
+    var path = token.Path;
+    path = Regex.Replace(path, "\\[\\d+\\]", "");
+    path = path.Replace("MarketLocations.", "");
+
+	string categoryName = string.Empty;
+    var periodIndex = path.IndexOf(".");
+	
+    if (!propertyMap.UniqueProperties.Contains(path))
+    {
+        propertyMap.UniqueProperties.Add(path);
+    }
+
+}
+
+public class PropertyMap
+{
+    public PropertyMap()
+    {
+        UniqueProperties = new List<string>();        
+    }
+
+    public List<string> UniqueProperties { get; set; }   
+}
+
+public enum TemplateType
+{
+	Functions,
+	TypeRemover,
+	TypeGenerator
+}
+
+#>

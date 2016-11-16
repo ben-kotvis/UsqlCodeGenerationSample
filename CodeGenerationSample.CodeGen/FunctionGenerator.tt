@@ -1,0 +1,10 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension=".genusql" #>
+<#@include file="Functions.ttinclude" #>
+
+
+<# //The message in the line below is for the generated code.  You can change this file.  See ReadMe.txt for more information #>
+//This is generated code, please do not change.  
+<#
+Run(TemplateType.Functions);
+#>

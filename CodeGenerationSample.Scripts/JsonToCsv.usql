@@ -1,0 +1,24 @@
+﻿REFERENCE ASSEMBLY master.[CodeGenerationSample.Json];
+REFERENCE ASSEMBLY master.[Newtonsoft.Json];
+
+@categories =
+    EXTRACT Produce string,
+            BakedGoods string,
+            RestaurantItems string,
+            MarketId string,
+            MarketName string
+    FROM "/Samples/Data/MarketLocations.json"
+    USING new CodeGenerationSample.Json.JsonExtractor("MarketLocations[*]", "SalesCategories.Produce", "SalesCategories.BakedGoods", "SalesCategories.RestaurantItems", "MarketId", "MarketName");
+
+
+@produce =
+    SELECT *
+    FROM ProduceFunction
+         (
+             @categories
+         ) AS V;
+
+OUTPUT @produce
+TO "/Samples/Output/produce.csv"
+USING Outputters.Csv(outputHeader : true);
+       

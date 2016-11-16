@@ -1,0 +1,150 @@
+﻿{
+  "Region": "Main",
+  "MarketLocations": [
+    {
+      "MarketName": "Central",
+      "MarketId": 1,
+      "SalesCategories": {
+        "Produce": [
+          {
+            "Type": "Apple",
+            "Name": "Granny Smith",
+            "DatePicked": "2016-11-08T14:14:33.712Z",
+            "ShelfLifeInDays": 24,
+            "Calories": 45,
+            "Price": 0.29
+          }
+        ],
+        "BakedGoods": [
+          {
+            "DateMade": "2016-11-08T14:14:33.712Z",
+            "Name": "Apple Pie",
+            "Price": 14.25
+          }
+        ],
+        "RestaurantItems": [
+          {
+            "Name": "Turkey Sandwich",
+            "Price": 4.85,
+            "PreparationTimeInMinutes": 20
+          }
+        ],
+        "NonPerishable": [
+          {
+            "Name": "Honey Mustard",
+            "Type": "Condiments"
+          }
+        ]
+      }
+    },
+    {
+      "MarketName": "Southern",
+      "MarketId": 2,
+      "SalesCategories": {
+        "Produce": [
+          {
+            "Type": "Apple",
+            "Name": "Granny Smith",
+            "DatePicked": "2016-11-08T14:14:33.712Z",
+            "ShelfLifeInDays": 24,
+            "Calories": 45,
+            "Price": 0.29
+          },
+          {
+            "Type": "Plums",
+            "Name": "Red Plums",
+            "DatePicked": "2016-11-08T14:14:33.712Z",
+            "ShelfLifeInDays": 12,
+            "Calories": 21,
+            "Price": 0.33
+          },
+          {
+            "Type": "Pears",
+            "Name": "Golden Nature",
+            "DatePicked": "2016-11-08T14:14:33.712Z",
+            "ShelfLifeInDays": 20,
+            "Calories": 40,
+            "Price": 0.45
+          }
+        ],
+        "BakedGoods": [
+          {
+            "DateMade": "2016-11-08T14:14:33.712Z",
+            "Name": "Apple Pie",
+            "Price": 14.25
+          }
+        ],
+        "RestaurantItems": [
+          {
+            "Name": "Turkey Sandwich",
+            "Price": 4.85,
+            "PreparationTimeInMinutes": 20
+          }
+        ],
+        "NonPerishable": [
+          {
+            "Name": "Honey Mustard",
+            "Type": "Condiments"
+          }
+        ]
+      }
+    },
+    {
+      "MarketName": "Western",
+      "MarketId": 3,
+      "SalesCategories": {
+        "Produce": [
+          {
+            "Type": "Plums",
+            "Name": "Red Plums",
+            "DatePicked": "2016-11-08T14:14:33.712Z",
+            "ShelfLifeInDays": 12,
+            "Calories": 21,
+            "Price": 0.33
+          },
+          {
+            "Type": "Pears",
+            "Name": "Golden Nature",
+            "DatePicked": "2016-11-08T14:14:33.712Z",
+            "ShelfLifeInDays": 20,
+            "Calories": 40,
+            "Price": 0.45
+          }
+        ],
+        "BakedGoods": [
+          {
+            "DateMade": "2016-11-08T14:14:33.712Z",
+            "Name": "Plum Pie",
+            "Price": 18.25
+          }
+        ],
+        "RestaurantItems": [
+          {
+            "Name": "Ham Sandwich",
+            "Price": 4.85,
+            "PreparationTimeInMinutes": 20
+          },
+          {
+            "Name": "Chicken Soup",
+            "Price": 2.25,
+            "PreparationTimeInMinutes": 5
+          }
+        ],
+        "NonPerishable": [
+          {
+            "Name": "Mayo",
+            "Type": "Condiments"
+          },
+          {
+            "Name": "Syrup",
+            "Type": "Condiments"
+          },
+          {
+            "Name": "Ginger",
+            "Type": "Spices"
+          }
+        ]
+      }
+    }
+  ]
+}

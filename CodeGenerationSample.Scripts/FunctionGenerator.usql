@@ -1,0 +1,136 @@
+﻿
+
+
+
+
+
+//This is generated code, please do not change.  
+
+/* ------------------------------------ Function Produce ------------------------------------- */
+
+DROP FUNCTION IF EXISTS ProduceFunction;
+		
+CREATE FUNCTION IF NOT EXISTS ProduceFunction(@table CategoryType)
+RETURNS @formatted Produce
+AS BEGIN
+		
+		
+REFERENCE ASSEMBLY master.[CodeGenerationSample.Json];
+REFERENCE ASSEMBLY master.[Newtonsoft.Json];
+		
+@staging =
+	SELECT 
+		CodeGenerationSample.Json.JsonFunctions.JsonTuple(Produce) AS Result,
+		MarketId,
+        MarketName
+	FROM @table;
+
+@staging =
+	SELECT 
+        CodeGenerationSample.Json.JsonFunctions.JsonTuple(Exploded) AS Result,
+		MarketId,
+        MarketName
+	FROM @staging
+			CROSS APPLY
+				EXPLODE(Result.Values) AS dp(Exploded);
+       
+		
+       
+@formatted =
+    SELECT 
+		Result["Type"] AS _GEN__Type,
+		Result["Name"] AS Name,
+		Result["DatePicked"] AS DatePicked,
+		Result["ShelfLifeInDays"] AS ShelfLifeInDays,
+		Result["Calories"] AS Calories,
+		Result["Price"] AS Price,
+		MarketId,
+        MarketName
+		FROM @staging;
+    
+	RETURN;
+END;
+
+/* ------------------------------------ Function BakedGoods ------------------------------------- */
+
+DROP FUNCTION IF EXISTS BakedGoodsFunction;
+		
+CREATE FUNCTION IF NOT EXISTS BakedGoodsFunction(@table CategoryType)
+RETURNS @formatted BakedGoods
+AS BEGIN
+		
+		
+REFERENCE ASSEMBLY master.[CodeGenerationSample.Json];
+REFERENCE ASSEMBLY master.[Newtonsoft.Json];
+		
+@staging =
+	SELECT 
+		CodeGenerationSample.Json.JsonFunctions.JsonTuple(BakedGoods) AS Result,
+		MarketId,
+        MarketName
+	FROM @table;
+
+@staging =
+	SELECT 
+        CodeGenerationSample.Json.JsonFunctions.JsonTuple(Exploded) AS Result,
+		MarketId,
+        MarketName
+	FROM @staging
+			CROSS APPLY
+				EXPLODE(Result.Values) AS dp(Exploded);
+       
+		
+       
+@formatted =
+    SELECT 
+		Result["DateMade"] AS DateMade,
+		Result["Name"] AS Name,
+		Result["Price"] AS Price,
+		MarketId,
+        MarketName
+		FROM @staging;
+    
+	RETURN;
+END;
+
+/* ------------------------------------ Function RestaurantItems ------------------------------------- */
+
+DROP FUNCTION IF EXISTS RestaurantItemsFunction;
+		
+CREATE FUNCTION IF NOT EXISTS RestaurantItemsFunction(@table CategoryType)
+RETURNS @formatted RestaurantItems
+AS BEGIN
+		
+		
+REFERENCE ASSEMBLY master.[CodeGenerationSample.Json];
+REFERENCE ASSEMBLY master.[Newtonsoft.Json];
+		
+@staging =
+	SELECT 
+		CodeGenerationSample.Json.JsonFunctions.JsonTuple(RestaurantItems) AS Result,
+		MarketId,
+        MarketName
+	FROM @table;
+
+@staging =
+	SELECT 
+        CodeGenerationSample.Json.JsonFunctions.JsonTuple(Exploded) AS Result,
+		MarketId,
+        MarketName
+	FROM @staging
+			CROSS APPLY
+				EXPLODE(Result.Values) AS dp(Exploded);
+       
+		
+       
+@formatted =
+    SELECT 
+		Result["Name"] AS Name,
+		Result["Price"] AS Price,
+		Result["PreparationTimeInMinutes"] AS PreparationTimeInMinutes,
+		MarketId,
+        MarketName
+		FROM @staging;
+    
+	RETURN;
+END;
