@@ -18,6 +18,18 @@ REFERENCE ASSEMBLY master.[Newtonsoft.Json];
              @categories
          ) AS V;
 
+@produce =
+    SELECT _GEN__Type,
+           CodeGenerationSample.Scripts.Functions.Convert(Name) AS Name,
+           DatePicked,
+           ShelfLifeInDays,
+           Calories,
+           Price,
+           MarketId,
+           MarketName
+    FROM @produce;
+
+
 OUTPUT @produce
 TO "/Samples/Output/produce.csv"
 USING Outputters.Csv(outputHeader : true);

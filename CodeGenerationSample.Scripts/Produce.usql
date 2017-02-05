@@ -1,0 +1,29 @@
+﻿REFERENCE ASSEMBLY master.[CodeGenerationSample.Json];
+REFERENCE ASSEMBLY master.[Newtonsoft.Json];
+
+@produce =
+    EXTRACT Name string,
+            DatePicked DateTime,
+            ShelfLifeInDays int,
+            Calories int,
+            Price decimal,
+            MarketId string,
+            MarketName string,
+            [MarketNameFromParent] string
+    FROM "/Samples/Data/MarketLocations.json"
+    USING new CodeGenerationSample.Json.MultiLevelJsonExtractor("MarketLocations[*].SalesCategories.Produce[*]",
+          false,
+          "Name",
+          "DatePicked",
+          "ShelfLifeInDays",
+          "Calories",
+          "Price",
+          "MarketId",
+          "MarketName",
+                                                                   "MarketLocations[*].Name");
+
+
+OUTPUT @produce
+TO "/Samples/Output/produce.csv"
+USING Outputters.Csv(outputHeader : true);
+       

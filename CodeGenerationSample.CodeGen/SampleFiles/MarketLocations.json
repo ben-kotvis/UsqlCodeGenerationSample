@@ -4,6 +4,7 @@
     {
       "MarketName": "Central",
       "MarketId": 1,
+      "Name":  "Central",
       "SalesCategories": {
         "Produce": [
           {
@@ -40,6 +41,7 @@
     {
       "MarketName": "Southern",
       "MarketId": 2,
+      "Name": "Southern",
       "SalesCategories": {
         "Produce": [
           {
@@ -92,6 +94,7 @@
     {
       "MarketName": "Western",
       "MarketId": 3,
+      "Name": "Western",
       "SalesCategories": {
         "Produce": [
           {

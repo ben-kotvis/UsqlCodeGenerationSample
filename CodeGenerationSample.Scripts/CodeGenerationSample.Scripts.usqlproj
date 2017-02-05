@@ -28,6 +28,7 @@
   <ItemGroup>
     <Script Include="FunctionGenerator.usql" />
     <Script Include="JsonToCsv.usql" />
+    <Script Include="Produce.usql" />
     <Script Include="TypeGenerator.usql" />
     <Script Include="TypeRemover.usql" />
     <ScriptCode Include="FunctionGenerator.usql.cs">
@@ -35,6 +36,9 @@
     </ScriptCode>
     <ScriptCode Include="JsonToCsv.usql.cs">
       <DependentUpon>JsonToCsv.usql</DependentUpon>
+    </ScriptCode>
+    <ScriptCode Include="Produce.usql.cs">
+      <DependentUpon>Produce.usql</DependentUpon>
     </ScriptCode>
     <ScriptCode Include="TypeGenerator.usql.cs">
       <DependentUpon>TypeGenerator.usql</DependentUpon>

@@ -40,9 +40,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Analytics.Interfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9f877b68b06e0b5e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.DataLake.USQL.SDK.1.2.5238528-HotFix\lib\net45\Microsoft.Analytics.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Analytics.Types, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9f877b68b06e0b5e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.DataLake.USQL.SDK.1.2.5238528-HotFix\lib\net45\Microsoft.Analytics.Types.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="Microsoft.Analytics.Interfaces" />
-    <Reference Include="Microsoft.Analytics.Types" />
     <Reference Include="Microsoft.Analytics.UnitTest" />
   </ItemGroup>
   <Choose>
@@ -75,6 +81,7 @@
     <None Include="InputFiles\MarketLocations.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

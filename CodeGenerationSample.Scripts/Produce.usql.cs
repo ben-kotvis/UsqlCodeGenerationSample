@@ -8,11 +8,5 @@ using System.Text;
 
 namespace CodeGenerationSample.Scripts
 {
-    public class Functions
-    {
-        public static string Convert(string input)
-        {
-            return input;
-        }
-    }
+    
 }

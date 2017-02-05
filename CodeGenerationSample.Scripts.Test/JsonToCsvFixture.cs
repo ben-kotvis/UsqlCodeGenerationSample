@@ -35,7 +35,7 @@ namespace CodeGenerationSample.Scripts.Test
             }
         }
 
-        public const string ADLToolsFolderPath = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\Common7\\IDE\\Extensions\\Microsoft\\Microsoft Azure Data Lake Tools for Visual Studio 2015\\2.2.2100.0";
+        public static string ADLToolsFolderPath = Path.GetFullPath("..\\..\\..\\packages\\Microsoft.Azure.DataLake.USQL.SDK.1.2.5238528-HotFix\\build\\runtime");
         public static string USQLScriptsPath = Path.GetFullPath("..\\..\\..\\CodeGenerationSample.Scripts");
         public static string USQLDataRoot = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData\\Local\\USQLDataRoot");        
         public static string ProcessedDestinationPath = Path.Combine(USQLDataRoot, "Samples\\Output");
@@ -62,8 +62,8 @@ namespace CodeGenerationSample.Scripts.Test
         private void RunAnalyticsJob(string scriptPath)
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
-            processStartInfo.FileName = Path.Combine(ADLToolsFolderPath, "LocalRunSDK", "LocalRunHelper.exe");
-            processStartInfo.Arguments = string.Format("run -Script \"{0}\" -DataRoot \"{1}\" -Verbose -WorkDir \"C:\\temp\" -CppSDK \"{2}\"", scriptPath, USQLDataRoot, Path.Combine(ADLToolsFolderPath, "CppSDK"));
+            processStartInfo.FileName = Path.Combine(ADLToolsFolderPath, "LocalRunHelper.exe");
+            processStartInfo.Arguments = string.Format("run -Script \"{0}\" -DataRoot \"{1}\" -CodeBehind -WorkDir \"C:\\temp\"", scriptPath, USQLDataRoot);
             processStartInfo.CreateNoWindow = false;
             processStartInfo.UseShellExecute = false;
             processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
